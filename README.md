@@ -11,7 +11,7 @@
 
 <h3>Key Changes:</h3>
 <ul>
-  <li>/src/
+  <li>/src/burner/libretro/libretro.cpp
   <li>Introduces a new function <code>RotateBuffer90_16bit()</code> in <code>libretro.cpp</code></li>
   <li>Within <code>retro_run()</code>, vertical games are detected and the framebuffer is rotated into a static buffer</li>
   <li>The rotated buffer is submitted via <code>video_cb()</code> for correct portrait display</li>
