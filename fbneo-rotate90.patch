@@ -1,0 +1,71 @@
+--- libretro.cpp
++++ libretro.cpp
+@@ -299,6 +299,15 @@
+ 	}
+
+ 
+
+ 	return rc;
+
++}
+
++
+
++static void RotateBuffer90_16bit(const uint16_t* src, uint16_t* dst, int width, int height, int pitch_src, int pitch_dst)
+
++{
+
++    for (int y = 0; y < height; y++) {
+
++        for (int x = 0; x < width; x++) {
+
++            dst[(width - 1 - x) * pitch_dst + y] = src[y * pitch_src + x];
+
++        }
+
++    }
+
+ }
+
+ 
+
+ static INT32 __cdecl libretro_bprintf(INT32 nStatus, TCHAR* szFormat, ...)
+
+@@ -1548,7 +1557,18 @@
+ 		pBurnDraw = NULL;
+
+ 	}
+
+ 
+
+-	video_cb(pBurnDraw, nGameWidth, nGameHeight, nBurnPitch);
+
++	if (pBurnDraw) {
+
++    	if (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL) {
+
++        static uint16_t rotate_buffer[384 * 384];
+
++        int src_pitch = nBurnPitch / 2;
+
++
+
++        RotateBuffer90_16bit((const uint16_t*)pBurnDraw, rotate_buffer,
+
++                     nGameWidth, nGameHeight, src_pitch, nGameWidth);
+
++	video_cb(rotate_buffer, nGameHeight, nGameWidth, nGameWidth * sizeof(uint16_t));
+
++    	} else {
+
++        video_cb(pBurnDraw, nGameWidth, nGameHeight, nBurnPitch);
+
++    	}
+
++	}
+
+ 
+
+ 	bool updated = false;
+
+ 	if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
