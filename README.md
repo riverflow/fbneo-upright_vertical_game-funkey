@@ -1,7 +1,7 @@
 <h2>📌 Patch Description: <code>fbneo-rotate90.patch</code></h2>
 
 <h3>Title:</h3>
-<p><code>Add software-based 90-degree rotation for vertical games in libretro core</code></p>
+<p><code>Add software-based 90-degree rotation for vertical games in libretro core (RG NANO, funkey)</code></p>
 
 <h3>Description:</h3>
 <p>
