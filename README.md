@@ -1,7 +1,7 @@
 <h2>📌 Patch Description: <code>fbneo-rotate90.patch</code></h2>
 
 <h3>Title:</h3>
-<p><code>Add software-based 90-degree rotation for vertical games in libretro core (RG NANO, funkey)</code></p>
+<p><code>Add software-based upright video output for vertical games in RG NANO fbneo-libretro core</code></p>
 
 <h3>Description:</h3>
 <p>
@@ -11,6 +11,7 @@
 
 <h3>Key Changes:</h3>
 <ul>
+  <li>/src/
   <li>Introduces a new function <code>RotateBuffer90_16bit()</code> in <code>libretro.cpp</code></li>
   <li>Within <code>retro_run()</code>, vertical games are detected and the framebuffer is rotated into a static buffer</li>
   <li>The rotated buffer is submitted via <code>video_cb()</code> for correct portrait display</li>
