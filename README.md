@@ -1,34 +1,32 @@
-Patch Description: fbneo-rotate90.patch
-Title:
-Add software-based 90-degree rotation for vertical games in libretro core (RG NANO, funkey-S)
+<h2>📌 Patch Description: <code>fbneo-rotate90.patch</code></h2>
 
-Description:
-This patch adds software-side 90-degree counter-clockwise rotation support to the FinalBurn Neo libretro core.
-When a game is flagged with BDF_ORIENTATION_VERTICAL, the framebuffer is manually rotated and passed to the frontend via video_cb().
+<h3>Title:</h3>
+<p><code>Add software-based 90-degree rotation for vertical games in libretro core</code></p>
 
-Key Changes:
+<h3>Description:</h3>
+<p>
+  This patch adds software-side 90-degree <strong>counter-clockwise rotation</strong> support to the FinalBurn Neo libretro core.
+  When a game is flagged with <code>BDF_ORIENTATION_VERTICAL</code>, the framebuffer is manually rotated and passed to the frontend via <code>video_cb()</code>.
+</p>
 
-Adds a new function RotateBuffer90_16bit() to libretro.cpp
+<h3>Key Changes:</h3>
+<ul>
+  <li>Introduces a new function <code>RotateBuffer90_16bit()</code> in <code>libretro.cpp</code></li>
+  <li>Within <code>retro_run()</code>, vertical games are detected and the framebuffer is rotated into a static buffer</li>
+  <li>The rotated buffer is submitted via <code>video_cb()</code> for correct portrait display</li>
+</ul>
 
-In retro_run(), detects vertical games and rotates pBurnDraw into a static buffer
+<h3>Test Environment:</h3>
+<ul>
+  <li><strong>Device:</strong> Anbernic RG Nano</li>
+  <li><strong>Frontend:</strong> <code>picoarch</code> (SDL 1.2-based RetroArch fork)</li>
+  <li><strong>Tested Game:</strong> <code>gunbird.zip</code> (Psikyo vertical shooter)</li>
+  <li><strong>Pixel Format:</strong> 16bpp (RGB565 / XRGB1555)</li>
+</ul>
 
-Sends the rotated buffer to the frontend, resulting in correct portrait orientation on devices like RG Nano
-
-Test Environment:
-
-Device: Anbernic RG Nano
-
-Frontend: picoarch (SDL 1.2-based RetroArch fork)
-
-Game tested: gunbird.zip (Psikyo vertical shooter)
-
-Pixel format: 16bpp (RGB565 / XRGB1555)
-
-Limitations:
-
-Only supports 16-bit framebuffer formats
-
-No effect on non-vertical (horizontal) games
-
-Uses a statically-allocated rotate_buffer (up to 384×384 resolution supported)
-
+<h3>Limitations:</h3>
+<ul>
+  <li>Only supports 16-bit framebuffer formats</li>
+  <li>Horizontal games are unaffected</li>
+  <li>Uses a statically allocated <code>rotate_buffer</code> (up to 384×384 resolution)</li>
+</ul>
